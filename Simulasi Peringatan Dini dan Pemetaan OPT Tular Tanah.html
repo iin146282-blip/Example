@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>Simulasi Peringatan Dini dan Pemetaan OPT Tular Tanah</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3f6fb;--ink:#14213a;--mut:#5a6b8a;--card:#fff;--line:#d3dcec;--acc:#0e7490}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#070c16;--ink:#e3ecf9;--mut:#93a6c6;--card:#101a2e;--line:#22324f;--acc:#22d3ee}}
+:root[data-theme="dark"]{--bg:#070c16;--ink:#e3ecf9;--mut:#93a6c6;--card:#101a2e;--line:#22324f;--acc:#22d3ee}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.45}
+main{max-width:1200px;margin:0 auto;padding:14px 12px 40px}
+.top{background:linear-gradient(135deg,#0b1220,#12304a);color:#e8f4ff;border-radius:12px;padding:16px;border:1px solid #1e3a5f}
+.top h1{margin:0 0 4px;font-size:clamp(17px,3.2vw,25px);letter-spacing:.3px}.top p{margin:0;font-size:13px;opacity:.85}
+.grid{display:grid;gap:12px;margin-top:12px}.g2{grid-template-columns:1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.box h2{margin:0 0 10px;font-size:15px;color:var(--acc)}
+.iot{background:radial-gradient(circle at 20% 0,#13213b,#0b1220 60%);color:#d7e3f4;border:1px solid #1e2a44;border-radius:12px;padding:12px;position:relative;overflow:hidden}
+.iot h3{margin:0 0 6px;font-size:13px;font-weight:600;color:#9fd8ff;display:flex;align-items:center;gap:8px;justify-content:space-between}
+.led{display:inline-block;width:10px;height:10px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px currentColor;color:#22c55e;flex:none}
+.live{font-size:11px;color:#7fa6cf}.live i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:5px;animation:bl 1.2s infinite}@keyframes bl{50%{opacity:.2}}
+label{display:block;font-size:12px;color:var(--mut)}
+input,select,button{font:inherit;font-size:16px;min-height:44px;border-radius:8px}
+select,input[type=number]{width:100%;margin-top:2px;padding:6px 8px;color:var(--ink);background:var(--bg);border:1px solid var(--line)}
+.f{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 12px}.full{grid-column:1/-1}
+.sl{margin-top:4px}.sl div{display:flex;justify-content:space-between;font-size:12px;color:var(--mut)}.sl output{color:var(--ink);font-weight:600}
+input[type=range]{width:100%;min-height:32px;accent-color:#0e9bb5}
+button{border:0;padding:0 14px;background:#0e7490;color:#fff;cursor:pointer;font-weight:600}button.alt{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.row{display:flex;gap:8px;margin-top:10px}.row button{flex:1}
+.ban{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:12px;border:1px solid #1e2a44;background:#0b1220;color:#e3ecf9}
+.ban .led{width:18px;height:18px;margin-top:4px}.ban b{font-size:17px}.ban ul{margin:6px 0 0;padding-left:18px;font-size:13.5px}.ban li{margin-bottom:3px}
+.tile b{font-size:21px;color:#fff}.tile small{color:#8fb0d8;font-size:11.5px;display:block}.tile canvas{width:100%;height:34px;display:block;margin-top:4px}
+.gauge{text-align:center}.gauge svg{width:100%;max-width:150px;display:block;margin:0 auto}.gauge b{display:block;font-size:12.5px;color:#9fd8ff}.gauge small{color:#8fb0d8;font-size:11.5px}
+.cv{position:relative;height:230px}.cv.l{height:290px}
+canvas#map{width:100%;aspect-ratio:1;display:block;border-radius:8px;cursor:crosshair;background:#0b1220}
+.leg{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;margin-top:6px;color:#b8cbe6}.leg span i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.note{font-size:12px;color:var(--mut);margin-top:8px}.note a{color:var(--acc)}
+details summary{cursor:pointer;color:var(--acc);font-weight:600;min-height:36px;line-height:36px}
+ul.ref{font-size:12.5px;padding-left:18px;color:var(--mut)}ul.ref li{margin-bottom:4px}
+@media (max-width:860px){.g2{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}.cv{height:210px}}
+@media (max-width:420px){main{padding:10px 8px 40px}.f{grid-template-columns:1fr}.tile b{font-size:18px}}
+</style></head><body><main>
+<div class="top"><h1>SISTEM PERINGATAN DINI DAN PEMETAAN OPT TULAR TANAH</h1><p>Simulasi dinamika populasi dan aktivitas bakteri, fungi, aktinomiset, dan fauna tanah sepanjang fase pertumbuhan tanaman</p></div>
+
+<div class="grid g2" style="margin-top:12px">
+<section class="box"><h2>Tanaman dan lahan</h2><div class="f">
+<label class="full">Jenis tanaman<select id="crop"></select></label>
+<label>Luas lahan<input id="area" type="number" min="0.01" step="any" value="1"></label>
+<label>Satuan<select id="unit"><option value="10000">hektar</option><option value="1">m²</option></select></label>
+<label class="full">Jenis tanah<select id="soil"></select></label>
+<label class="full">Skenario perubahan kondisi<select id="scen"><option value="const">Kondisi tetap (hanya fluktuasi sensor)</option><option value="dry">Kemarau: tanah mengering dan menghangat</option><option value="wet">Musim hujan: tanah makin lembap</option><option value="hot">Pemanasan: suhu naik bertahap</option></select></label></div>
+<div id="sl1"></div></section>
+<section class="box"><h2>Kondisi lingkungan tanah</h2><div id="sl2"></div>
+<div class="row"><button id="play">▶ Putar simulasi</button><button class="alt" id="reseed">Acak ulang peta</button></div>
+<details><summary>Kapasitas dukung populasi (lanjutan)</summary><div class="f" id="kf"></div><p class="note">Nilai awal adalah asumsi orde besaran. Ganti sesuai hasil analisis laboratorium tanah Anda.</p></details></section></div>
+
+<div class="ban" id="ban" style="margin-top:12px"><span class="led" id="bled"></span><div id="btxt"></div></div>
+
+<div class="grid g4" id="tiles"></div>
+<div class="grid g4" id="gauges"></div>
+<div class="grid g2" id="gch"></div>
+<div class="grid g2">
+<section class="iot"><h3>Populasi relatif seluruh kelompok (% kapasitas dukung) <span class="live"><i></i>simulasi</span></h3><div class="cv l"><canvas id="cr"></canvas></div></section>
+<section class="iot"><h3>Indeks risiko OPT tular tanah (0 sampai 100) <span class="live"><i></i>peringatan dini</span></h3><div class="cv l"><canvas id="ck"></canvas></div></section></div>
+
+<section class="iot" style="margin-top:12px"><h3>Peta persebaran risiko OPT di lahan (kisi 12 x 12) dan titik sensor <span class="live"><i></i>hari ke-<span id="mday">0</span></span></h3>
+<div class="grid g2" style="margin-top:0;align-items:start"><div><canvas id="map" width="480" height="480"></canvas><div class="leg"><span><i style="background:#22c55e"></i>Rendah</span><span><i style="background:#facc15"></i>Waspada</span><span><i style="background:#fb923c"></i>Siaga</span><span><i style="background:#ef4444"></i>Awas</span><span>◯ titik sensor</span></div></div>
+<div><div id="mstat" style="font-size:13.5px"></div><div id="cell" style="font-size:13px;color:#9fd8ff;margin-top:10px">Ketuk petak pada peta untuk melihat kondisinya.</div>
+<div style="margin-top:10px"><label style="color:#8fb0d8">Variasi spasial antar petak<div class="sl"><div><span></span><output id="vro">35%</output></div><input id="vr" type="range" min="0" max="100" value="35"></div></label></div></div></div></section>
+
+<section class="box" style="margin-top:12px"><details><summary>Asumsi model dan acuan ilmiah</summary>
+<p class="note">Ini simulasi pendukung belajar dan perencanaan, bukan alat diagnosis. Parameter di bawah adalah asumsi yang mengacu pada kisaran di literatur dan belum dikalibrasi dengan data lapangan Anda. Peringatan dini sesungguhnya perlu dikombinasikan dengan pemantauan lapangan dan uji laboratorium.</p>
+<ul class="ref"><li><b>Dinamika populasi:</b> pertumbuhan logistik harian dN/dt = r·f·N·(1 - N/K) - m·(1 + 2(1 - f))·N. Faktor lingkungan f = akar kuadrat dari hasil kali respons pH, suhu, dan kelembapan. K dipengaruhi bahan organik, tekstur tanah, dan fase tumbuh.</li>
+<li><b>pH:</b> pH adalah prediktor paling konsisten bagi komunitas bakteri (meta-analisis, pooled r = 0,68; Research Square) dan memengaruhi genus bakteri (Zhou dkk. 2024, Soil Biology and Biochemistry, 109552). Fungi menoleransi rentang pH lebih lebar daripada bakteri.</li>
+<li><b>Suhu:</b> optimum mikroba sekitar 30 sampai 35 °C dan aktivitas tertekan di atas 40 °C (Zhang dkk. 2024, Microorganisms 12:1683). Optimum aktinomiset 26 °C pada kelembapan sekitar 18,3% (Dehtiarova dan Dyomkin, Univ. Karazin).</li>
+<li><b>Kelembapan dan OPT:</b> kelembapan tanah adalah prediktor terpenting layu bakteri Ralstonia (Jiang dkk. 2021, Soil Ecology Letters). Tanah asam cenderung memiliki penyakit lebih berat (PMC10444831). Suhu tinggi dan drainase buruk memperparah layu Fusarium (Legume Research, LR-5610).</li>
+<li><b>Penekanan hayati:</b> keanekaragaman dan aktivitas mikroba tanah menekan patogen tular tanah (PMC8349628); Trichoderma, Bacillus, Streptomyces, dan Pseudomonas dikenal sebagai agen antagonis.</li>
+<li><b>Lama fase:</b> awal, vegetatif, generatif, dan panen mengikuti panjang tahap FAO-56 (Allen dkk. 1998): awal, perkembangan, pertengahan, akhir musim.</li>
+<li><b>Indeks risiko</b> = 100 x kesesuaian lingkungan bagi patogen x kerentanan tanaman x kerentanan fase x (1 - 0,6 x indeks penekanan hayati). Ambang: Rendah di bawah 25, Waspada 25 sampai 45, Siaga 45 sampai 65, Awas 65 ke atas. Bobot dan ambang ini adalah heuristik pemodel.</li>
+<li>Contoh OPT tular tanah per tanaman adalah daftar umum, bukan keluaran model. Peta memakai variasi spasial buatan di sekitar nilai masukan Anda, bukan data sensor nyata.</li></ul></details></section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+var $=function(i){return document.getElementById(i)};
+function fm(x,d){return isFinite(x)?x.toLocaleString("id-ID",{minimumFractionDigits:d,maximumFractionDigits:d}):"-"}
+function cl(x,a,b){return Math.max(a,Math.min(b,x))}
+// [nama, awal, vegetatif, generatif, panen (hari), kerentanan, OPT tular tanah yang umum]
+var CROPS=[["Tomat",30,40,45,30,1,"layu bakteri (Ralstonia), layu Fusarium, nematoda puru akar"],["Cabai",30,35,40,20,1,"layu Fusarium, busuk pangkal (Phytophthora), nematoda puru akar"],
+["Kentang",25,30,45,30,.9,"layu bakteri, Fusarium, nematoda sista"],["Terong",30,40,40,20,.95,"layu bakteri, nematoda puru akar"],["Bawang merah",15,25,70,40,.85,"layu Fusarium (moler), Sclerotium"],
+["Mentimun",20,30,40,15,.8,"layu Fusarium, Pythium"],["Kubis",40,60,50,15,.7,"akar gada (Plasmodiophora)"],["Kacang tanah",25,35,45,25,.7,"layu Sclerotium rolfsii, Fusarium"],
+["Kedelai",15,15,40,15,.7,"Rhizoctonia, Fusarium, nematoda"],["Jagung",20,35,40,30,.6,"busuk batang Fusarium, Pythium"],["Padi",30,30,60,30,.5,"Rhizoctonia, nematoda akar"]];
+// [nama, pergeseran batas aerasi (poin %KL), skala bahan organik]
+var SOILS=[["Pasir",8,.85],["Lempung berpasir",5,.9],["Lempung",0,1],["Lempung berdebu",-3,1.05],["Liat",-10,1.1]];
+var STG=["Awal","Vegetatif","Generatif","Panen"],SS=[.9,.8,1,.6],LV=["Rendah","Waspada","Siaga","Awas"],LC=["#22c55e","#facc15","#fb923c","#ef4444"];
+var G=[{n:"Bakteri",u:"×10⁶ CFU/g",K:100,c:"#22d3ee",r:.35,m:.05,ph:[7,1.8],T:[5,32,45],M:[10,55,85,120],ks:1.5,st:[.8,1.1,1.2,.9],w:.3},
+{n:"Fungi",u:"×10⁴ CFU/g",K:100,c:"#a3e635",r:.15,m:.02,ph:[5.8,2.6],T:[4,27,40],M:[10,50,80,120],ks:2,st:[.9,1,1.1,1.2],w:.25},
+{n:"Aktinomiset",u:"×10⁵ CFU/g",K:100,c:"#fbbf24",r:.12,m:.015,ph:[7.3,1.6],T:[8,27,43],M:[5,35,60,100],ks:2,st:[.9,1,1.1,1.2],w:.3},
+{n:"Fauna tanah",u:"individu/m²",K:1000,c:"#f472b6",r:.04,m:.01,ph:[6.5,1.8],T:[8,24,36],M:[15,60,90,125],ks:1,st:[.8,1,1.1,1],w:.15}];
+function beta(t,a){if(t<=a[0]||t>=a[2])return 0;var x=(t-a[0])/(a[1]-a[0]),y=(a[2]-t)/(a[2]-a[1]);return x*Math.pow(y,(a[2]-a[1])/(a[1]-a[0]))}
+function trap(x,a,b,c,d){return x<=a?0:x<b?(x-a)/(b-a):x<=c?1:x<d?1-.8*(x-c)/(d-c):.2}
+function fenv(g,ph,t,m,so){var fp=Math.exp(-Math.pow((ph-g.ph[0])/g.ph[1],2)),ft=beta(t,g.T),fw=trap(m,g.M[0],g.M[1],g.M[2]+so[1],g.M[3]+so[1]);return Math.sqrt(fp*ft*fw)}
+function omf(g,om,so){var x=om*so[2];return Math.min(1.6,(x/(x+g.ks))/(3/(3+g.ks)))}
+var S={}; // keadaan: crop, so, sc, T, L, K
+function stageOf(d){var c=0;for(var i=0;i<4;i++){c+=S.L[i];if(d<c)return i}return 3}
+function envAt(b,d){var f=d/S.T,dm=0,dt=0;if(S.sc=="dry"){dm=-40*f;dt=2*f}else if(S.sc=="wet"){dm=30*f;dt=-f}else if(S.sc=="hot"){dt=5*f}
+ return {m:cl(b.m+dm+4*Math.sin(d*.45),5,125),t:b.t+dt+1.2*Math.sin(d*.2)}}
+function sim(b,upTo){var o={N:[[],[],[],[]],A:[[],[],[],[]],R:[],S:[],m:[],t:[]},N=[];
+ for(var d=0;d<=upTo;d++){var e=envAt(b,d),s=stageOf(d),ss=0;
+  G.forEach(function(g,i){var f=fenv(g,b.ph,e.t,e.m,S.so),ke=S.K[i]*omf(g,b.om,S.so)*g.st[s];
+   if(d==0)N[i]=.35*ke;else{N[i]+=g.r*f*N[i]*(1-N[i]/ke)-g.m*(1+2*(1-f))*N[i];N[i]=Math.max(N[i],S.K[i]*1e-4)}
+   var a=Math.min(1,f*Math.min(1,N[i]/(.8*S.K[i])));o.N[i].push(N[i]);o.A[i].push(a);ss+=g.w*a});
+  var pf=.4*cl((e.m-55)/55,0,1)+.3*cl((6.5-b.ph)/2,0,1)+.3*Math.exp(-Math.pow((e.t-30)/7,2));
+  o.S.push(ss);o.R.push(100*pf*S.crop[5]*SS[s]*(1-.6*ss));o.m.push(e.m);o.t.push(e.t)}
+ return o}
+function lvl(r){return r<25?0:r<45?1:r<65?2:3}
+// ---- UI ----
+var CH={},seed=7,play=null,B={};
+function slider(id,lab,min,max,step,val,unit){return '<div class="sl"><label>'+lab+'<div><span></span><output id="'+id+'o"></output></div><input id="'+id+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+val+'" data-u="'+unit+'"></label></div>'}
+CROPS.forEach(function(c,i){$("crop").add(new Option(c[0],i))});SOILS.forEach(function(s,i){$("soil").add(new Option(s[0],i))});$("soil").value=2;
+$("sl1").innerHTML=slider("age","Umur tanaman",0,200,1,60," hari");
+$("sl2").innerHTML=slider("ph","pH tanah",3.5,9,.1,6.5,"")+slider("temp","Suhu tanah",10,45,.5,28," °C")+slider("moist","Kelembapan tanah (% kapasitas lapang)",10,120,1,70,"%")+slider("om","Kandungan bahan organik",.5,10,.1,3," %");
+G.forEach(function(g,i){$("kf").insertAdjacentHTML("beforeend",'<label>'+g.n+' ('+g.u+')<input id="k'+i+'" type="number" min="1" step="any" value="'+g.K+'"></label>')});
+$("tiles").innerHTML=["moist","temp","ph","om"].map(function(k){return '<div class="iot tile"><h3><span id="tn'+k+'"></span><span class="led" id="tl'+k+'"></span></h3><b id="tv'+k+'"></b><small id="ts'+k+'"></small><canvas id="tc'+k+'" height="34"></canvas></div>'}).join("");
+$("gauges").innerHTML=G.map(function(g,i){return '<div class="iot gauge"><b>'+g.n+'</b><svg viewBox="0 0 100 62"><path d="M10 52 A40 40 0 0 1 90 52" fill="none" stroke="#1e2a44" stroke-width="9" stroke-linecap="round"/><path id="ga'+i+'" d="M10 52 A40 40 0 0 1 90 52" fill="none" stroke="'+g.c+'" stroke-width="9" stroke-linecap="round" stroke-dasharray="0 126"/><text id="gt'+i+'" x="50" y="50" text-anchor="middle" fill="#fff" font-size="15" font-weight="700"></text></svg><small>aktivitas</small><br><small id="gp'+i+'"></small></div>'}).join("");
+$("gch").innerHTML=G.map(function(g,i){return '<section class="iot"><h3>'+g.n+': populasi dan aktivitas <span class="live"><i></i>'+g.u+'</span></h3><div class="cv"><canvas id="cg'+i+'"></canvas></div></section>'}).join("");
+function lab(){["age","ph","temp","moist","om"].forEach(function(k){var e=$(k);$(k+"o").textContent=fm(+e.value,k=="ph"||k=="om"?1:0)+e.dataset.u});$("vro").textContent=$("vr").value+"%"}
+function area(){return Math.max(.01,+$("area").value||1)*(+$("unit").value)}
+// plugin IoT: pita fase, garis "sekarang", pita tingkat risiko
+var iot={id:"iot",beforeDatasetsDraw:function(ch){var x=ch.scales.x,a=ch.chartArea,c=ch.ctx;if(!ch.$L)return;c.save();
+ if(ch.$hb){var y=ch.scales.y,b=[0,25,45,65,100];for(var i=0;i<4;i++){var y0=y.getPixelForValue(Math.min(b[i+1],y.max)),y1=y.getPixelForValue(b[i]);c.fillStyle=LC[i]+"26";c.fillRect(a.left,y0,a.right-a.left,y1-y0)}}
+ var st=0,cols=["rgba(34,211,238,.05)","rgba(163,230,53,.07)","rgba(251,191,36,.06)","rgba(244,114,182,.07)"];
+ ch.$L.forEach(function(L,i){var x0=x.getPixelForValue(st),x1=x.getPixelForValue(Math.min(st+L-1,S.T));c.fillStyle=cols[i];c.fillRect(x0,a.top,x1-x0,a.bottom-a.top);c.fillStyle="#7fa6cf";c.font="10.5px sans-serif";c.textAlign="center";c.fillText(STG[i],(x0+x1)/2,a.top+11);st+=L});c.restore()},
+ afterDatasetsDraw:function(ch){if(ch.$now==null||!ch.scales.x)return;var x=ch.scales.x,a=ch.chartArea,c=ch.ctx,px=x.getPixelForValue(ch.$now);c.save();c.strokeStyle="#fff";c.setLineDash([4,3]);c.lineWidth=1.2;c.beginPath();c.moveTo(px,a.top);c.lineTo(px,a.bottom);c.stroke();c.setLineDash([]);c.fillStyle="#fff";c.font="10px sans-serif";c.textAlign="center";c.fillText("SEKARANG",px,a.bottom-4);c.restore()}};
+function mk(id,cfg,hb){if(CH[id])CH[id].destroy();var ch=new Chart($(id),cfg);ch.$L=S.L;ch.$hb=hb;CH[id]=ch;return ch}
+function opts(y,y1,ymax){var o={responsive:true,maintainAspectRatio:false,animation:false,interaction:{mode:"index",intersect:false},plugins:{legend:{labels:{boxWidth:10,font:{size:11}}}},
+ scales:{x:{title:{display:true,text:"Hari setelah tanam"},ticks:{maxTicksLimit:10},grid:{display:false}},y:{beginAtZero:true,title:{display:true,text:y},suggestedMax:ymax}}};
+ if(y1)o.scales.y1={position:"right",min:0,max:100,title:{display:true,text:y1},grid:{display:false}};return o}
+function calc(){lab();S.crop=CROPS[$("crop").value];S.so=SOILS[$("soil").value];S.sc=$("scen").value;S.L=S.crop.slice(1,5);S.T=S.L.reduce(function(a,b){return a+b});
+ S.K=G.map(function(g,i){return Math.max(1,+$("k"+i).value||g.K)});$("age").max=S.T;if(+$("age").value>S.T)$("age").value=S.T;lab();
+ B={ph:+$("ph").value,t:+$("temp").value,m:+$("moist").value,om:+$("om").value};
+ var o=S.o=sim(B,S.T),lb=o.R.map(function(_,i){return i});
+ G.forEach(function(g,i){var u=S.K[i]>=1000?1:S.K[i]>=100?0:1;
+  mk("cg"+i,{type:"line",data:{labels:lb,datasets:[{label:"Populasi ("+g.u+")",data:o.N[i].map(function(v){return Math.round(v*100)/100}),borderColor:g.c,backgroundColor:g.c+"22",fill:true,borderWidth:2,pointRadius:0,tension:.25,yAxisID:"y"},
+   {label:"Aktivitas (%)",data:o.A[i].map(function(v){return Math.round(v*1000)/10}),borderColor:"#e5e7eb",borderDash:[5,3],borderWidth:1.5,pointRadius:0,tension:.25,yAxisID:"y1"}]},options:opts(g.u,"Aktivitas (%)")})});
+ mk("cr",{type:"line",data:{labels:lb,datasets:G.map(function(g,i){return{label:g.n,data:o.N[i].map(function(v){return Math.round(v/S.K[i]*1000)/10}),borderColor:g.c,borderWidth:2,pointRadius:0,tension:.25}})},options:opts("% kapasitas dukung",0,160)});
+ mk("ck",{type:"line",data:{labels:lb,datasets:[{label:"Indeks risiko",data:o.R.map(function(v){return Math.round(v*10)/10}),borderColor:"#f8fafc",backgroundColor:"rgba(248,250,252,.12)",fill:true,borderWidth:2,pointRadius:0,tension:.2}]},options:(function(){var q=opts("Indeks risiko",0,100);q.scales.y.min=0;q.scales.y.max=100;return q})()},true);
+ now()}
+function stat(v,lo,hi,mg){return v>=lo&&v<=hi?"#22c55e":(v>=lo-mg&&v<=hi+mg)?"#facc15":"#ef4444"}
+function spark(id,arr,age,col){var c=$(id),w=c.width=c.clientWidth*2||300,h=c.height=68,mn=Math.min.apply(null,arr),mx=Math.max.apply(null,arr),g=c.getContext("2d");g.clearRect(0,0,w,h);g.strokeStyle=col;g.lineWidth=2;g.beginPath();
+ arr.forEach(function(v,i){var x=i/(arr.length-1)*w,y=h-4-(mx==mn?.5:(v-mn)/(mx-mn))*(h-8);i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke();var xa=age/(arr.length-1)*w;g.strokeStyle="#fff";g.lineWidth=1;g.beginPath();g.moveTo(xa,0);g.lineTo(xa,h);g.stroke()}
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var NF=null;function noise(){var r=rng(seed);NF=[0,1,2].map(function(){var a=[];for(var i=0;i<25;i++)a.push(r());return a});}
+function nz(k,x,y){var u=x/11*4,v=y/11*4,i=Math.min(3,Math.floor(u)),j=Math.min(3,Math.floor(v)),fu=u-i,fv=v-j,a=NF[k];function q(p,q2){return a[q2*5+p]}
+ return q(i,j)*(1-fu)*(1-fv)+q(i+1,j)*fu*(1-fv)+q(i,j+1)*(1-fu)*fv+q(i+1,j+1)*fu*fv}
+var CEL=[],SEN=[[2,2],[9,2],[5,5],[2,9],[9,9],[6,10]];
+function now(){var age=+$("age").value,o=S.o,s=stageOf(age),R=o.R[age],lv=lvl(R);
+ Object.keys(CH).forEach(function(k){CH[k].$now=age;CH[k].update("none")});
+ var tl={moist:["Kelembapan tanah",o.m,"%KL",[50,85],15,0],temp:["Suhu tanah",o.t,"°C",[22,34],4,1],ph:["pH tanah",o.m.map(function(){return B.ph}),"",[5.8,7.5],.7,1],om:["Bahan organik",o.m.map(function(){return B.om}),"%",[2,10],1,1]};
+ Object.keys(tl).forEach(function(k){var t=tl[k],v=t[1][age];$("tn"+k).textContent=t[0];$("tv"+k).textContent=fm(v,t[5])+" "+t[2];$("ts"+k).textContent="rentang nyaman "+t[3][0]+" sampai "+t[3][1];$("tl"+k).style.color=$("tl"+k).style.background=stat(v,t[3][0],t[3][1],t[4]);spark("tc"+k,t[1],age,"#38bdf8")});
+ G.forEach(function(g,i){var a=o.A[i][age];$("ga"+i).setAttribute("stroke-dasharray",(a*125.7).toFixed(1)+" 126");$("gt"+i).textContent=Math.round(a*100)+"%";$("gp"+i).textContent=fm(o.N[i][age],S.K[i]>=100?0:1)+" "+g.u});
+ var sp=o.S[age],rec=[];
+ if(B.ph<5.5)rec.push("pH tanah rendah ("+fm(B.ph,1)+"): tanah asam cenderung menaikkan penyakit tular tanah. Pertimbangkan pengapuran sesuai uji tanah.");
+ if(o.m[age]>90)rec.push("Tanah sangat lembap: perbaiki drainase dan kurangi frekuensi irigasi.");
+ if(o.m[age]<35)rec.push("Tanah terlalu kering: aktivitas mikroba menurun. Atur irigasi dan gunakan mulsa.");
+ if(B.om<2)rec.push("Bahan organik rendah: tambahkan kompos atau pupuk kandang matang.");
+ if(o.t[age]>35)rec.push("Suhu tanah tinggi menekan mikroba bermanfaat. Pertimbangkan mulsa atau naungan.");
+ if(sp<.45)rec.push("Indeks penekanan hayati rendah ("+Math.round(sp*100)+"%): pertimbangkan agen hayati (Trichoderma, Bacillus, Pseudomonas) dan bahan organik.");
+ if(!rec.length)rec.push("Kondisi relatif mendukung. Lanjutkan pemantauan rutin.");
+ $("bled").style.background=$("bled").style.color=LC[lv];
+ $("btxt").innerHTML='<b>Status peringatan dini: '+LV[lv].toUpperCase()+'</b> (indeks risiko '+fm(R,0)+' dari 100)<div style="font-size:12.5px;color:#9fb3d1;margin-top:2px">Hari ke-'+age+' dari '+S.T+', fase '+STG[s]+'. Indeks penekanan hayati '+Math.round(sp*100)+'%. OPT tular tanah yang umum pada '+S.crop[0].toLowerCase()+': '+S.crop[6]+'.</div><ul>'+rec.map(function(r){return"<li>"+r+"</li>"}).join("")+'</ul>';
+ map(age)}
+function map(age){var cv=$("map"),g=cv.getContext("2d"),n=12,w=cv.width/n,vr=+$("vr").value/100,cnt=[0,0,0,0];$("mday").textContent=age;CEL=[];g.clearRect(0,0,cv.width,cv.height);
+ for(var y=0;y<n;y++)for(var x=0;x<n;x++){var b={ph:cl(B.ph+vr*1.6*(nz(1,x,y)-.5),3.5,9),t:B.t+vr*(4*(x/11-.5)+2*(nz(0,x,y)-.5)),m:cl(B.m+vr*(50*(nz(0,x,y)-.5)+20*(y/11-.5)),5,125),om:cl(B.om+vr*3*(nz(2,x,y)-.5),.3,12)};
+  var o=sim(b,age),R=o.R[age],l=lvl(R);cnt[l]++;CEL.push({x:x,y:y,b:b,R:R,l:l});g.fillStyle=LC[l];g.globalAlpha=.55+.4*Math.min(1,R/100);g.fillRect(x*w+1,y*w+1,w-2,w-2)}
+ g.globalAlpha=1;g.font="bold 11px sans-serif";g.textAlign="center";SEN.forEach(function(p,i){var cx=(p[0]+.5)*w,cy=(p[1]+.5)*w;g.strokeStyle="#fff";g.lineWidth=2;g.beginPath();g.arc(cx,cy,9,0,7);g.stroke();g.fillStyle="#fff";g.fillText("S"+(i+1),cx,cy+4)});
+ var A=area(),f=function(x){return x>=10000?fm(x/10000,2)+" ha":fm(x,0)+" m²"};
+ $("mstat").innerHTML=LV.map(function(n,i){return '<div style="display:flex;justify-content:space-between;border-bottom:1px solid #1e2a44;padding:4px 0"><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:'+LC[i]+';margin-right:6px"></i>'+n+'</span><span>'+fm(cnt[i]/1.44,0)+'% ('+f(cnt[i]/144*A)+')</span></div>'}).join("")+'<div style="margin-top:8px;color:#fdba74">Area siaga dan awas: '+f((cnt[2]+cnt[3])/144*A)+'</div>'}
+$("map").addEventListener("click",function(e){var r=this.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/r.width*12),y=Math.floor((e.clientY-r.top)/r.height*12),c=CEL[y*12+x];if(!c)return;
+ $("cell").innerHTML='Petak ('+(x+1)+','+(y+1)+'): risiko <b style="color:'+LC[c.l]+'">'+LV[c.l]+' ('+fm(c.R,0)+')</b>. pH '+fm(c.b.ph,1)+', kelembapan '+fm(c.b.m,0)+'%, suhu '+fm(c.b.t,1)+' °C, bahan organik '+fm(c.b.om,1)+'%.'});
+["crop","soil","scen","area","unit"].forEach(function(i){$(i).addEventListener("input",function(){if(i=="crop"){}calc()})});
+["ph","temp","moist","om","k0","k1","k2","k3"].forEach(function(i){$(i).addEventListener("input",calc)});
+$("age").addEventListener("input",function(){lab();now()});$("vr").addEventListener("input",function(){lab();map(+$("age").value)});
+$("reseed").addEventListener("click",function(){seed=Math.floor(Math.random()*1e6);noise();map(+$("age").value)});
+$("play").addEventListener("click",function(){if(play){clearInterval(play);play=null;this.textContent="▶ Putar simulasi";return}var b=this;b.textContent="⏸ Jeda";if(+$("age").value>=S.T)$("age").value=0;
+ play=setInterval(function(){var a=+$("age").value+1;if(a>S.T){clearInterval(play);play=null;b.textContent="▶ Putar simulasi";return}$("age").value=a;lab();now()},140)});
+Chart.defaults.color="#9fb3d1";Chart.defaults.borderColor="rgba(120,150,200,.16)";Chart.defaults.font.size=11;Chart.register(iot);
+noise();calc();
+</script></body></html>
